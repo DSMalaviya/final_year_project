@@ -18,15 +18,15 @@ CORS(app)
 
 def get_model_cxr():
     global vgg_model,resnet50_model,inceptionv3_model,xception_model
-    vgg_model=load_model(r'E:\PROJECT\vgg16_cxr.h5')
-    resnet50_model=load_model(r'E:\PROJECT\resnet_cxr.h5')
-    inceptionv3_model=load_model(r'E:\PROJECT\InceptionV3_cxr.h5')
-    xception_model=load_model(r'E:\PROJECT\Xception_cxr.h5')
+    vgg_model=load_model(r'F:\PROJECT\vgg16_cxr.h5')
+    resnet50_model=load_model(r'F:\PROJECT\resnet_cxr.h5')
+    inceptionv3_model=load_model(r'F:\PROJECT\InceptionV3_cxr.h5')
+    xception_model=load_model(r'F:\PROJECT\Xception_cxr.h5')
     print("** all cxr model are loaded!!")
 
 def get_model_ct():
     global mobilenetv2_model
-    mobilenetv2_model=load_model(r'E:\PROJECT\MobilenetV2_ct.h5')
+    mobilenetv2_model=load_model(r'F:\PROJECT\MobilenetV2_ct.h5')
     print("** ct model is loaded!!")
 
 def  preprocess_image(image,target_size):
@@ -57,14 +57,14 @@ def predict_cxr():
 
     response={
         'prediction':{
-            'vgg_normal':prediction_vgg[0][1],
-            'vgg_covid':prediction_vgg[0][0],
-            'resnet_normal':prediction_resnet[0][1],
-            'resnet_covid':prediction_resnet[0][0],
-            'xception_normal':prediction_xception[0][1],
-            'xception_covid':prediction_xception[0][0],
-            'inception_normal':prediction_inception[0][1],
-            'inception_covid':prediction_inception[0][0]
+            'vgg_normal':prediction_vgg[0][1]*100,
+            'vgg_covid':prediction_vgg[0][0]*100,
+            'resnet_normal':prediction_resnet[0][1]*100,
+            'resnet_covid':prediction_resnet[0][0]*100,
+            'xception_normal':prediction_xception[0][1]*100,
+            'xception_covid':prediction_xception[0][0]*100,
+            'inception_normal':prediction_inception[0][1]*100,
+            'inception_covid':prediction_inception[0][0]*100
         }
     }
     return jsonify(response)
@@ -82,8 +82,8 @@ def predict_ct():
 
     response={
         'prediction':{
-            'non_covid':prediction_mobilenet[0][1],
-            'covid':prediction_mobilenet[0][0],
+            'non_covid':prediction_mobilenet[0][1]*100,
+            'covid':prediction_mobilenet[0][0]*100,
         }
     }
     return jsonify(response)
