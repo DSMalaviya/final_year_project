@@ -23,7 +23,7 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand">Cov19 Pridictor</a>
-            <button class="btn btn-sm btn-outline-warning"><a href="prediction_cxr.html" style="color: yellow;">CXR
+            <button class="btn btn-sm btn-outline-warning"><a href="prediction_cxr.html" style="color: yellow;text-decoration: none;">CXR
                     Pridictor</a></button>
         </div>
     </nav>
@@ -96,8 +96,8 @@
             console.log(message);
             $.post("http://127.0.0.1:5000/predict_ct", JSON.stringify(message), function (response) {
                 console.log(response);
-                $("#non_covid").text(response.prediction.non_covid);
-                $("#covid").text(response.prediction.covid);
+                $("#non_covid").text(`${response.prediction.non_covid} %`);
+                $("#covid").text(`${response.prediction.covid} %`);
                 // console.log(response);
             });
         });

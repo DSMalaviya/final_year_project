@@ -88,4 +88,4 @@ def predict_ct():
     }
     return jsonify(response)
 
-app.run(debug=True)
+app.run(debug=False)

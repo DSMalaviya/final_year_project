@@ -21,7 +21,7 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand">Cov19 Pridictor</a>
-            <button class="btn btn-sm btn-outline-warning"><a href="prediction_ct.html" style="color: yellow;">CT
+            <button class="btn btn-sm btn-outline-warning"><a href="prediction_ct.html" style="color: yellow;text-decoration: none;">CT
                     Pridictor</a></button>
         </div>
     </nav>
@@ -117,14 +117,14 @@
             console.log(message);
             $.post("http://127.0.0.1:5000/predict_cxr", JSON.stringify(message), function (response) {
                 console.log(response);
-                $("#vgg_normal").text(response.prediction.vgg_normal);
-                $("#vgg_covid").text(response.prediction.vgg_covid);
-                $("#resnet_normal").text(response.prediction.resnet_normal);
-                $("#resnet_covid").text(response.prediction.resnet_covid);
-                $("#xception_normal").text(response.prediction.xception_normal);
-                $("#xception_covid").text(response.prediction.xception_covid);
-                $("#inception_normal").text(response.prediction.inception_normal);
-                $("#inception_covid").text(response.prediction.inception_covid);
+                $("#vgg_normal").text(`${response.prediction.vgg_normal} %`);
+                $("#vgg_covid").text(`${response.prediction.vgg_covid} %`);
+                $("#resnet_normal").text(`${response.prediction.resnet_normal} %`);
+                $("#resnet_covid").text(`${response.prediction.resnet_covid} %`);
+                $("#xception_normal").text(`${response.prediction.xception_normal} %`);
+                $("#xception_covid").text(`${response.prediction.xception_covid} %`);
+                $("#inception_normal").text(`${response.prediction.inception_normal} %`);
+                $("#inception_covid").text(`${response.prediction.inception_covid} %`);
                 // console.log(response);
             });
         });
