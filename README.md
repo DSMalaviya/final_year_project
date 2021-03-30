@@ -7,7 +7,7 @@ Bootstap version : 4.5.2
 <br/>
 jQuery version : 3.5.1
 <br/>
-Python version : 3.8.7 (path relese could be any)
+Python version : 3.8.7 (patch relese could be any)
 <br/>
 
 For development I used:
