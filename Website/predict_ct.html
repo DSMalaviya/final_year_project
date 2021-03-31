@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>CT Prediction</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
+
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="./css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="./css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="./css/bootstrap.css">
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="./css/magnific-popup.css">
+	<!-- Owl Carousel  -->
+	<link rel="stylesheet" href="./css/owl.carousel.min.css">
+	<link rel="stylesheet" href="./css/owl.theme.default.min.css">
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="./css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="./js/modernizr-2.6.2.min.js"></script>
+	
+	</head>
+	<body>
+		
+	<div class="gtco-loader"></div>
+	
+	<div id="page">
+	<nav class="gtco-nav" role="navigation">
+		<div class="gtco-container">
+			<div class="row">				
+				<div class="col-xs-10 text-right menu-1">
+					<ul>
+						<li class="active"><a href="index.html">Home</a></li>
+						<li><a href="about.html">About</a></li>
+						<li class="has-dropdown">
+							<a href="index.html">Services</a>
+							<ul class="dropdown">
+								<li><a href="predict_cxr.html">CXR Prediction</a></li>
+								<li><a href="predict_ct.html">CT Prediction</a></li>
+							</ul>
+						</li>
+						<li><a href="contact.html">Contact</a></li>
+					</ul>
+				</div>
+			</div>			
+		</div>
+	</nav>
+	<header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image:url(images/CT_Test.jpg);">
+		<div class="overlay"></div>
+		<div class="gtco-container">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2 text-center">
+					<div class="display-t">
+						<div class="display-tc animate-box" data-animate-effect="fadeIn">
+							<h1>CT Prediction</h1>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	
+	 <!-- image-selecteing area -->
+    <div class="form-group text-center">
+        <img src="images/image_placeholder.png" onclick="triggerClick()" class="imageDisplay rounded" id="selected_image" />
+        <input type="file" id="image_selector" style="display:none">
+        <br>
+        <button class="btn btn-outline-success" style="margin-top: 20px;" onclick="triggerClick()">Select image</button>
+    </div>
+
+    <div class="text-center">
+        <button id="predict_button" class="btn btn-primary predict_btn">Predict</button>
+
+        <div id="loading">
+			<div class="spinner-border" style="width: 3rem;height: 3rem;"></div>
+        </div>
+        <!-- pridiction button -->
+        <h5 style="font-weight: bold;margin-top: 25px;">Predictions</h5>
+    </div>
+
+
+
+    <!-- pridiction tables -->
+    <div class="card" style="margin-left: 15px;margin-right: 15px;margin-top: 15px;">
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>sr no</th>
+                    <th>fine tuned model</th>
+                    <th>normal</th>
+                    <th>covid</th>
+                </tr>
+
+                <tr>
+                    <td>1</td>
+                    <td>MobilenetV2</td>
+                    <td><span id="non_covid"></span></td>
+                    <td><span id="covid"></span></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <script>
+        $('#loading').hide();
+        let base64Image;
+        $('#image_selector').change(function () {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                let dataURL = reader.result;
+                $('#selected_image').attr("src", dataURL);
+                base64Image = dataURL.replace("data:image/png;base64", "");
+                console.log(base64Image);
+            }
+            reader.readAsDataURL($("#image_selector")[0].files[0]);
+            $("#non_covid").text("");
+            $("#covid").text("");
+
+        });
+
+        $("#predict_button").click(function (event) {
+            $(".predict_btn").hide();
+            $("#loading").show();
+            let message = {
+                image: base64Image
+            }
+            console.log(message);
+            $.post("http://127.0.0.1:5000/predict_ct", JSON.stringify(message), function (response) {
+                console.log(response);
+                $("#non_covid").text(`${response.prediction.non_covid} %`);
+                $("#covid").text(`${response.prediction.covid} %`);
+                // console.log(response);
+                $("#loading").hide();
+                $(".predict_btn").show();
+            });
+        });
+
+        function triggerClick() {
+            document.querySelector('#image_selector').click();
+        }
+    </script>
+	
+	<hr>
+	<section class="">
+		<!-- Footer -->
+		<footer class="text-center text-white" style="background-color: #0a4275;">
+			<!-- Grid container -->
+			<div class="container p-4 pb-0">
+				<!-- Section: CTA -->
+				<section class="">
+					<p class="d-flex justify-content-center align-items-center">
+						<ul>
+							<a href="index.html">Home</a>
+							<a href="about.html">About</a>
+							<a href="contact.html">Contact</a>
+						</ul>
+					</p>
+				</section>
+			</div>
+		</footer>
+	</section>
+
+	<!-- jQuery -->
+	<script src="./js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="./js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="./js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="./js/jquery.waypoints.min.js"></script>
+	<!-- Carousel -->
+	<script src="./js/owl.carousel.min.js"></script>
+	<!-- countTo -->
+	<script src="./js/jquery.countTo.js"></script>
+	<!-- Magnific Popup -->
+	<script src="./js/jquery.magnific-popup.min.js"></script>
+	<script src="./js/magnific-popup-options.js"></script>
+	<!-- Main -->
+	<script src="./js/main.js"></script>
+
+	</body>
+</html>
+
