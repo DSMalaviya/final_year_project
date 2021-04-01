@@ -67,6 +67,7 @@ def predict_cxr():
             'inception_covid':prediction_inception[0][0]*100
         }
     }
+    print(response)
     return jsonify(response)
 
 
@@ -86,6 +87,7 @@ def predict_ct():
             'covid':prediction_mobilenet[0][0]*100,
         }
     }
+    print(response)
     return jsonify(response)
 
 app.run(debug=False)
