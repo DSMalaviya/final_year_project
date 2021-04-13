@@ -133,7 +133,8 @@
         });
 
         $("#predict_button").click(function (event) {
-            $(".predict_btn").hide();
+			if(base64Image){
+				$(".predict_btn").hide();
             $("#loading").show();
             let message = {
                 image: base64Image
@@ -147,6 +148,10 @@
                 $("#loading").hide();
                 $(".predict_btn").show();
             });
+			}else{
+				alert('Plaese select the image First');
+			}
+            
         });
 
         function triggerClick() {
